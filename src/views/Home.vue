@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Jokes @jokes-loaded="jokesLoaded">
-      <div class="loaded-jokes" v-if="isJokesLoaded">
+      <div v-show="elementVisible" class="loaded-jokes">
         <h3>Successfully loaded {{ numberOfJokes }} jokes</h3>
       </div>
     </Jokes>
@@ -19,14 +19,24 @@ export default {
   },
   data() {
     return {
-      isJokesLoaded: false,
-      numberOfJokes: ''
+      numberOfJokes: null,
+      jokesToLoad: null,
+      elementVisible: true
     }
   },
   methods:{
-    jokesLoaded(numberOfJokesLoaded) {
-      this.isJokesLoaded = true
+    jokesLoaded(numberOfJokesLoaded, number) {
       this.numberOfJokes = numberOfJokesLoaded
+      this.jokesToLoad = number
+      if (this.numberOfJokes === this.jokesToLoad) {
+        setTimeout(() => {
+          this.elementVisible = false
+          console.log("Element visible = " + this.elementVisible)
+          }, 2000)
+      }
+    },
+    loadingNewJokes() {
+      this.elementVisible = true
     }
   }
 }

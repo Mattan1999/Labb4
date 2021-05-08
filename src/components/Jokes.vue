@@ -2,12 +2,13 @@
     <div class="joke-page">
         <img :src="image" width="150px">
         <h1>Welcome to funny jokes</h1>
-        <h4>Please enter how many jokes you want to see!</h4>
+        <h4>Everytime you visit this page 10 jokes will be loaded.</h4>
+        <h4>If you want to read more jokes, enter a number!</h4>
         <input class="user-input" type="text" placeholder="Enter number of jokes" v-model="numberOfJokesToLoad">
         <button class="fetch-btn" @click="fetchData(numberOfJokesToLoad)">Load jokes</button>
         <slot></slot>
         <div class="joke-template" v-if="jokes">
-            <div class="joke-area-3" v-if="numberOfJokesToLoad > 2">
+            <div class="joke-area-3" v-if="numberOfJokes > 2">
                 <div class="joke" v-for="joke in jokes" :key="joke.id">
                     <h4 class="joke-setup">{{ joke.setup }}</h4>
                     <div v-if="joke.showPunchline === false">
@@ -18,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="joke-area-2" v-else-if="numberOfJokesToLoad > 1 && numberOfJokesToLoad < 3">
+            <div class="joke-area-2" v-else-if="numberOfJokes > 1 && numberOfJokes < 3">
                 <div class="joke" v-for="joke in jokes" :key="joke.id">
                     <h4 class="joke-setup">{{ joke.setup }}</h4>
                     <div v-if="joke.showPunchline === false">
@@ -29,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="joke-area-1" v-else-if="numberOfJokesToLoad < 2">
+            <div class="joke-area-1" v-else-if="numberOfJokes < 2">
                 <div class="joke" v-for="joke in jokes" :key="joke.id">
                     <h4 class="joke-setup">{{ joke.setup }}</h4>
                     <div v-if="joke.showPunchline === false">
@@ -60,16 +61,33 @@ Vue.use(VueAxios, axios);
 
 export default {
     name: 'fetch',
+    created() {
+        this.fetchData(10)
+    },
     data() {
         return {
             jokes: [],
+            numberOfJokes: 0,
             numberOfJokesToLoad: '',
-            image: image
+            image: image,
+        }
+    },
+    props: {
+        finishedLoading: {
+            type: String,
+            default: 'Anonym'
         }
     },
     methods: {
         fetchData: function(number) {
-            this.$store.commit('updateJokesFetched', this.numberOfJokesToLoad)
+            if (number === 1) {
+                this.numberOfJokes = 1
+            } else if (number === 2) {
+                this.numberOfJokes = 2
+            } else {
+                this.numberOfJokes = 3
+            }
+            this.$store.commit('updateJokesFetched', number)
             if (this.jokes !== 0) {
                 this.jokes = []
             }
@@ -78,11 +96,9 @@ export default {
                 this.axios.get(url).then((response) => {                  
                     response.data['showPunchline'] = false
                     this.jokes.push(response.data)
-                    this.$emit("jokes-loaded", this.jokes.length)
-                    
+                    this.$emit("jokes-loaded", this.jokes.length, number)
                 })
             }
-            console.log("I botten av fetchData()")
         },
         showJokePunchline: function(id) {
             for(let i = 0; i < this.jokes.length; i++) {
@@ -130,21 +146,21 @@ export default {
 .joke-area-1 {
     display: grid;
     grid-template-columns: 300px;
-    margin: 10px;
+    margin: 20px 10px 10px 10px;
     color: #bbbbbb;
 }
 
 .joke-area-2 {
     display: grid;
     grid-template-columns: 300px 300px;
-    margin: 10px;
+    margin: 20px 10px 10px 10px;
     color: #bbbbbb;
 }
 
 .joke-area-3 {
     display: grid;
     grid-template-columns: 300px 300px 300px;
-    margin: 10px;
+    margin: 20px 10px 10px 10px;
     color: #bbbbbb;
 }
 

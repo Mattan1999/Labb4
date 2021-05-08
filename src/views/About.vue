@@ -1,12 +1,39 @@
 <template>
   <div class="about">
-    <h3>You have fetched a total amount of {{ $store.state.totalAmountOfJokesFetched }} jokes since you visited this page </h3>
-    <p></p>
+    <FetchInfo :amountFetched="fetchedAmount" :likeAmount="amountLiked" />
   </div>
 </template>
 
-<style scoped>
-.about {
-  color: #FFFFFF;
+<script>
+
+import FetchInfo from '../components/FetchInfo.vue'
+
+export default {
+  name: 'About',
+  components: {
+    FetchInfo
+  },
+  created() {
+    this.updateInfo()
+  },
+  data() {
+    return {
+      fetchedAmount: 0,
+      amountLiked: 0
+    }
+  },
+  methods:{
+    updateInfo() {
+      this.fetchedAmount = this.$store.state.totalAmountOfJokesFetched
+      this.amountLiked = this.$store.state.likedJokes
+      console.log(this.amountLiked)
+    }
+  }
 }
+</script>
+
+<style scoped>
+  .about {
+    color: #FFFFFF;
+  }
 </style>
