@@ -1,8 +1,11 @@
 <template>
   <div class="home">
-    <Jokes @jokes-loaded="jokesLoaded">
-      <div v-show="elementVisible" class="loaded-jokes">
+    <Jokes @jokes-loaded="jokesLoaded" @error-loading-jokes="errorLoadingJokes">
+      <div v-show="successfullElementVisible" class="loaded-jokes">
         <h3>Successfully loaded {{ numberOfJokes }} jokes</h3>
+      </div>
+      <div v-show="errorElementVisible" class="error-loading-jokes">
+        <h3 v-if="errorInfo">{{ errorInfo.additionalInfo }}</h3>
       </div>
     </Jokes>
   </div>
@@ -21,7 +24,9 @@ export default {
     return {
       numberOfJokes: null,
       jokesToLoad: null,
-      elementVisible: true
+      successfullElementVisible: true,
+      errorElementVisible: false,
+      errorInfo: null
     }
   },
   methods:{
@@ -30,13 +35,24 @@ export default {
       this.jokesToLoad = number
       if (this.numberOfJokes === this.jokesToLoad) {
         setTimeout(() => {
-          this.elementVisible = false
-          console.log("Element visible = " + this.elementVisible)
-          }, 2000)
+          this.successfullElementVisible = false
+          }, 3500)
       }
     },
     loadingNewJokes() {
-      this.elementVisible = true
+      this.successfullElementVisible = true
+    },
+    errorLoadingJokes(error) {
+      this.errorElementVisible = true
+      this.errorInfo = error
+      console.log(this.errorInfo)
+      setTimeout(() => {
+          this.successfullElementVisible = false
+          }, 200)
+      // setTimeout(() => {
+      //     this.errorElementVisible = false
+      //     }, 5000)
+      
     }
   }
 }

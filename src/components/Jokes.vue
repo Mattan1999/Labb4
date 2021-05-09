@@ -8,36 +8,14 @@
         <button class="fetch-btn" @click="fetchData(numberOfJokesToLoad)">Load jokes</button>
         <slot></slot>
         <div class="joke-template" v-if="jokes">
-            <div class="joke-area-3" v-if="numberOfJokes > 2">
+            <div :class="{'joke-area-3': numberOfJokes > 2, 'joke-area-2': numberOfJokes > 1 && numberOfJokes < 3, 'joke-area-1': numberOfJokes < 2}">
                 <div class="joke" v-for="joke in jokes" :key="joke.id">
                     <h4 class="joke-setup">{{ joke.setup }}</h4>
                     <div v-if="joke.showPunchline === false">
                         <input class="punchline-button" type="button" value="Show punchline" @click="showJokePunchline(joke.id)">
                     </div>
                     <div v-if="joke.showPunchline === true">
-                        <h4 class="joke-punchline">{{ joke.punchline }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="joke-area-2" v-else-if="numberOfJokes > 1 && numberOfJokes < 3">
-                <div class="joke" v-for="joke in jokes" :key="joke.id">
-                    <h4 class="joke-setup">{{ joke.setup }}</h4>
-                    <div v-if="joke.showPunchline === false">
-                        <input class="punchline-button" type="button" value="Show punchline" @click="showJokePunchline(joke.id)">
-                    </div>
-                    <div v-if="joke.showPunchline === true">
-                        <h4 class="joke-punchline">{{ joke.punchline }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="joke-area-1" v-else-if="numberOfJokes < 2">
-                <div class="joke" v-for="joke in jokes" :key="joke.id">
-                    <h4 class="joke-setup">{{ joke.setup }}</h4>
-                    <div v-if="joke.showPunchline === false">
-                        <input class="punchline-button" type="button" value="Show punchline" @click="showJokePunchline(joke.id)">
-                    </div>
-                    <div v-if="joke.showPunchline === true">
-                        <h4 class="joke-punchline">{{ joke.punchline }}</h4>
+                        <h4 class="joke-punchline">{{ joke.delivery }}</h4>
                     </div>
                 </div>
             </div>
@@ -70,6 +48,8 @@ export default {
             numberOfJokes: 0,
             numberOfJokesToLoad: '',
             image: image,
+            foundDuplicate: false,
+            errorResponse: null,
         }
     },
     props: {
@@ -92,11 +72,33 @@ export default {
                 this.jokes = []
             }
             for(let i = 0; i < number; i++) {
-                let url = 'https://official-joke-api.appspot.com/random_joke'
-                this.axios.get(url).then((response) => {                  
-                    response.data['showPunchline'] = false
-                    this.jokes.push(response.data)
+                let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart'
+                this.axios.get(url).then((response) => {
+                    // console.log(response.data)
+                    for(let i = 0; i < this.jokes.length; i++) {
+                        if (this.jokes[i].id === response.data.id) {
+                            this.foundDuplicate = true
+                            this.axios.get(url).then((response) => {
+                                response.data['showPunchline'] = false
+                                this.jokes.push(response.data)
+                                console.log("Found duplicate!!!")
+                            })
+                        }
+                    }
+                    if (!this.foundDuplicate) {
+                        response.data['showPunchline'] = false
+                        this.jokes.push(response.data)
+                    }
                     this.$emit("jokes-loaded", this.jokes.length, number)
+                })
+                .catch(err => {
+                    if (err.response) {
+                        this.errorResponse = err.response.data
+                        this.$emit("error-loading-jokes", this.errorResponse)
+                    } else if (err.request) {
+                        console.log("err.request")
+                        console.log(err.request.response.error)
+                    }
                 })
             }
         },
@@ -206,5 +208,17 @@ export default {
     text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;
     width: 300px;
     color: #2ecc71;
+}
+
+.error-loading-jokes {
+    display: block;
+    padding: 1px 10px;
+    margin: 20px auto 10px auto;
+    background-color: #4b4b4b;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
+    text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;
+    width: 500px;
+    color: #ff3838;
 }
 </style>
