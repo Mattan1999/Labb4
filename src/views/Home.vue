@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <Jokes @jokes-loaded="jokesLoaded" @error-loading-jokes="errorLoadingJokes">
+    <Jokes @jokes-loaded="jokesLoaded" @error-loading-jokes="errorLoadingJokes" @loading-new-jokes="loadingNewJokes">
       <div v-show="successfullElementVisible" class="loaded-jokes">
-        <h3>Successfully loaded {{ numberOfJokes }} jokes</h3>
+        <h5>Successfully loaded {{ numberOfJokes }} jokes</h5>
       </div>
       <div v-show="errorElementVisible" class="error-loading-jokes">
-        <h3 v-if="errorInfo">{{ errorInfo.additionalInfo }}</h3>
+        <h5 v-if="errorInfo">{{ errorInfo.additionalInfo }}</h5>
       </div>
     </Jokes>
   </div>
@@ -31,6 +31,7 @@ export default {
   },
   methods:{
     jokesLoaded(numberOfJokesLoaded, number) {
+      this.loadingNewJokes()
       this.numberOfJokes = numberOfJokesLoaded
       this.jokesToLoad = number
       if (this.numberOfJokes === this.jokesToLoad) {
