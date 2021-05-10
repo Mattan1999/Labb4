@@ -55,18 +55,9 @@ export default {
       this.inputErr = false
       this.numberOfJokes = numberOfJokesLoaded
       this.jokesToLoad = number
-      console.log("|")
-      console.log("Antal skämt laddade: " + this.numberOfJokes)
-      console.log("Antal skämt att ladda: " + this.jokesToLoad)
-      console.log("Antal skämt laddade = Antal skämt att ladda: " + (numberOfJokesLoaded === number).toString().toUpperCase())
     },
     loadingNewJokes() {
-      console.clear()
       this.successfullElementVisible = true
-      console.log("Visar 'success-elementet'")
-      console.log("|")
-      console.log("|")
-      console.log("|")
     },
     errorLoadingJokes(error) {
       this.errorElementVisible = true
@@ -79,23 +70,12 @@ export default {
   },
   watch: {
     numberOfJokes() {
-      console.log("Antal skämt laddade: " + this.numberOfJokes)
-      console.log("Antal skämt att ladda: " + this.jokesToLoad)
       if (this.jokesToLoad === this.numberOfJokes) {
         setTimeout(() => {
           this.loading = false
         }, 1000)
-        console.log("|")
-        console.log("|")
-        console.log("|")
-        console.log("I if-satsen (numberOfJokesLoaded === number)")
-        console.log("|")
-        console.log("Stänger snart 'success-elementet'!!!!")
         setTimeout(() => {
           this.successfullElementVisible = false
-          console.log("|")
-          console.log("|")
-          console.log("Stängde 'success-elementet'")
         }, 4000)
       }
     }
