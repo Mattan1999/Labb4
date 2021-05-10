@@ -1,9 +1,5 @@
 <template>
     <div class="joke-page">
-        <img :src="image" width="150px">
-        <h1>Welcome to funny jokes</h1>
-        <h5>Everytime you visit this page 10 jokes will be loaded.</h5>
-        <h5>If you want to read more jokes, enter a number!</h5>
         <input class="user-input" type="text" placeholder="Enter number of jokes" v-model="numberOfJokesToLoad">
         <button class="fetch-btn" @click="fetchData(numberOfJokesToLoad)">Load jokes</button>
         <slot></slot>
@@ -33,7 +29,6 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import image from "../assets/img/laugh.png";
 
 Vue.use(VueAxios, axios);
 
@@ -47,7 +42,6 @@ export default {
             jokes: [],
             numberOfJokes: 0,
             numberOfJokesToLoad: '',
-            image: image,
             foundDuplicate: false,
             errorResponse: null,
         }
@@ -60,47 +54,45 @@ export default {
     },
     methods: {
         fetchData: function(number) {
-            this.$emit("loading-new-jokes")
-            if (number === 1) {
-                this.numberOfJokes = 1
-            } else if (number === 2) {
-                this.numberOfJokes = 2
-            } else {
-                this.numberOfJokes = 3
-            }
-            this.$store.commit('updateJokesFetched', number)
-            if (this.jokes !== 0) {
+            if (number < 1) {
+                this.$emit("not-valid")
                 this.jokes = []
-            }
-            for(let i = 0; i < number; i++) {
-                let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart'
-                this.axios.get(url).then((response) => {
-                    // console.log(response.data)
-                    for(let i = 0; i < this.jokes.length; i++) {
-                        if (this.jokes[i].id === response.data.id) {
-                            this.foundDuplicate = true
-                            this.axios.get(url).then((response) => {
-                                response.data['showPunchline'] = false
-                                this.jokes.push(response.data)
+            } else {
+                if (this.jokes !== 0) {
+                    this.jokes = []
+                }
+                this.$emit("loading-new-jokes")
+                if (number === 1) {
+                    this.numberOfJokes = 1
+                } else if (number === 2) {
+                    this.numberOfJokes = 2
+                } else {
+                    this.numberOfJokes = 3
+                }
+                this.$store.commit('updateJokesFetched', number)
+                for(let i = 0; i < number; i++) {
+                    let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart'
+                    this.axios.get(url).then((response) => {
+                        for(let i = 0; i < this.jokes.length; i++) {
+                            if (this.jokes[i].id === response.data.id) {
+                                this.foundDuplicate = true
                                 console.log("Found duplicate!!!")
-                            })
+                            }
                         }
-                    }
-                    if (!this.foundDuplicate) {
                         response.data['showPunchline'] = false
                         this.jokes.push(response.data)
-                    }
-                    this.$emit("jokes-loaded", this.jokes.length, number)
-                })
-                .catch(err => {
-                    if (err.response) {
-                        this.errorResponse = err.response.data
-                        this.$emit("error-loading-jokes", this.errorResponse)
-                    } else if (err.request) {
-                        console.log("err.request")
-                        console.log(err.request.response.error)
-                    }
-                })
+                        this.$emit("jokes-loaded", this.jokes.length, Number(number))
+                    })
+                    .catch(err => {
+                        if (err.response) {
+                            this.errorResponse = err.response.data
+                            this.$emit("error-loading-jokes", this.errorResponse)
+                        } else if (err.request) {
+                            console.log("err.request")
+                            console.log(err.request.response.error)
+                        }
+                    })
+                }
             }
         },
         showJokePunchline: function(id) {
@@ -122,6 +114,7 @@ export default {
     $punchline-color: #bbbbbb;
     $box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
     $text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;
+    $white-color: #EBEBEB;
 
 
     .joke-page {
@@ -134,7 +127,8 @@ export default {
         font-size: 16px;
         border: none;
         border-radius: 5px;
-        margin-right: 10px;
+        margin: 20px 10px 0 0;
+        background-color: $white-color;
     }
 
     .fetch-btn {
@@ -209,7 +203,7 @@ export default {
     .loaded-jokes {
         display: block;
         padding: 1px 10px;
-        margin: 20px auto 10px auto;
+        margin: 30px auto 10px auto;
         background-color: #4b4b4b;
         border-radius: 10px;
         box-shadow: $box-shadow;
@@ -232,5 +226,11 @@ export default {
         text-shadow: $text-shadow;
         width: 500px;
         color: $error;
+    }
+
+    .loading {
+        padding: 1px 10px;
+        margin: 0px auto 15px auto;
+        color: $white-color;
     }
 </style>

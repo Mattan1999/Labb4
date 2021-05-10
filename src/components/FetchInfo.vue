@@ -1,7 +1,7 @@
 <template>
     <div class="fetch-info">
-        <h3>You have fetched a total amount of {{ numberOfTimesFetched }} jokes since you visited this page </h3>
-        <h3>You have liked {{ jokesLiked }} jokes since you visited this page </h3>
+        <h3>{{ numberOfTimesFetchedString }}</h3>
+        <h3>{{ jokesLikedString }}</h3>
     </div>
 </template>
 
@@ -27,6 +27,14 @@ export default {
     },
     methods: {
         
+    },
+    computed: {
+        numberOfTimesFetchedString() {
+            return 'You have fetched a total amount of ' + this.numberOfTimesFetched + ' jokes since you visited this page'
+        },
+        jokesLikedString() {
+            return 'You have liked ' + this.jokesLiked + ' jokes since you visited this page'
+        }
     }
 }
 </script>

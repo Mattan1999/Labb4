@@ -26,7 +26,6 @@ export default {
     updateInfo() {
       this.fetchedAmount = this.$store.state.totalAmountOfJokesFetched
       this.amountLiked = this.$store.state.likedJokes
-      console.log(this.amountLiked)
     }
   }
 }
