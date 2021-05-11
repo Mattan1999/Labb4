@@ -5,15 +5,20 @@
     <h5>Everytime you visit this page 10 jokes will be loaded.</h5>
     <h5>If you want to read more jokes, enter a number!</h5>
     <Jokes @jokes-loaded="jokesLoaded" @error-loading-jokes="errorLoadingJokes" @loading-new-jokes="loadingNewJokes" @not-valid="inputError">
-      <div v-show="successfullElementVisible" class="loaded-jokes">
-        <h5>Successfully loaded {{ numberOfJokes }} jokes</h5>
-        <b-spinner v-show="loading" label="Loading..." class="loading"></b-spinner>
+      <div v-if="isOnline">
+        <div v-show="successfullElementVisible" class="loaded-jokes">
+          <h5>Successfully loaded {{ numberOfJokes }}/{{jokesToLoad}} jokes</h5>
+          <b-spinner v-show="loading" label="Loading..." class="loading"></b-spinner>
+        </div>
+        <div v-show="inputErr" class="error-loading-jokes">
+          <h5>You must enter a number higher than 1</h5>
+        </div>
+        <div v-show="errorElementVisible" class="error-loading-jokes">
+          <h5 v-if="errorInfo">{{ errorInfo.additionalInfo }}</h5>
+        </div>
       </div>
-      <div v-show="inputErr" class="error-loading-jokes">
-        <h5>You must enter a number higher than 1</h5>
-      </div>
-      <div v-show="errorElementVisible" class="error-loading-jokes">
-        <h5 v-if="errorInfo">{{ errorInfo.additionalInfo }}</h5>
+      <div v-if="isOffline" class="network-status">
+        <h4 >You are currently offline!<br>The page wont work</h4>
       </div>
     </Jokes>
   </div>

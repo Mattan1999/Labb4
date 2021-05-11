@@ -1,7 +1,6 @@
 <template>
     <div class="fetch-info">
-        <h3>{{ numberOfTimesFetchedString }}</h3>
-        <h3>{{ jokesLikedString }}</h3>
+        <h5>{{ numberOfTimesFetchedString }}</h5>
     </div>
 </template>
 
@@ -42,8 +41,8 @@ export default {
 <style scoped>
     .fetch-info {
         display: block;
-        padding: 1px 10px;
-        margin: 20px auto 10px auto;
+        padding: 15px 10px;
+        margin: 20px auto;
         background-color: #4b4b4b;
         border-radius: 10px;
         box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
@@ -52,8 +51,10 @@ export default {
         color: #BBBBBB;
     }
 
-    .fetch-info h3 {
+    .fetch-info h5 {
+        padding-top: 15px;
         padding-bottom: 15px;
+        border-top: dashed 2px #17c0eb;
         border-bottom: dashed 2px #17c0eb;
     }
 </style>

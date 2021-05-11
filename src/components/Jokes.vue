@@ -7,11 +7,13 @@
             <div :class="{'joke-area-3': numberOfJokes > 2, 'joke-area-2': numberOfJokes > 1 && numberOfJokes < 3, 'joke-area-1': numberOfJokes < 2}">
                 <div class="joke" v-for="joke in jokes" :key="joke.id">
                     <p class="joke-setup">{{ joke.setup }}</p>
-                    <div v-if="joke.showPunchline === false">
+                    <div v-if="!joke.showPunchline">
                         <input class="punchline-button" type="button" value="Show punchline" @click="showJokePunchline(joke.id)">
                     </div>
-                    <div v-if="joke.showPunchline === true">
+                    <div v-if="joke.showPunchline">
                         <p class="joke-punchline">{{ joke.delivery }}</p>
+                        <b-icon v-if="joke.liked" icon="heart-fill" variant="danger" font-scale="1.5" class="like" @click="likedJoke(joke.id)"></b-icon>
+                        <b-icon v-else icon="heart" font-scale="1.5" class="like" @click="likedJoke(joke.id)"></b-icon>
                     </div>
                 </div>
             </div>
@@ -73,6 +75,7 @@ export default {
                             }
                         }
                         response.data['showPunchline'] = false
+                        response.data['liked'] = false
                         this.jokes.push(response.data)
                         this.$emit("jokes-loaded", this.jokes.length, Number(number))
                     })
@@ -94,6 +97,18 @@ export default {
                     this.jokes[i].showPunchline = true
                 }
             }
+        },
+        likedJoke: function(id) {
+            for(let i = 0; i < this.jokes.length; i++) {
+                if (this.jokes[i].id === id) {
+                    this.jokes[i].liked = !this.jokes[i].liked
+                    if (this.jokes[i].liked) {
+                        this.$store.commit('addLikedJoke', this.jokes[i])
+                    } else {
+                        this.$store.commit('removeLikedJoke', this.jokes[i])
+                    }
+                }
+            }
         }
     }
 }
@@ -108,6 +123,8 @@ export default {
     $box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
     $text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;
     $white-color: #EBEBEB;
+
+
 
 
     .joke-page {
@@ -175,7 +192,6 @@ export default {
     }
 
     .joke-punchline {
-        font-weight: 300;
         font-style: italic;
         text-shadow: $text-shadow;
     }
@@ -191,6 +207,10 @@ export default {
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
+    }
+
+    .like {
+        margin-bottom: 10px;
     }
 
     .loaded-jokes {
@@ -225,5 +245,17 @@ export default {
         padding: 1px 10px;
         margin: 0px auto 15px auto;
         color: $white-color;
+    }
+
+    .network-status {
+        display: block;
+        padding: 15px 10px;
+        margin: 20px auto 10px auto;
+        background-color: #4b4b4b;
+        border-radius: 10px;
+        box-shadow: $box-shadow;
+        text-shadow: $text-shadow;
+        width: 400px;
+        color: $error;
     }
 </style>
