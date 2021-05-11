@@ -19,7 +19,6 @@
         <template v-else>
             <p>Error, could not load any jokes...</p>
         </template>
-        
     </div>
 </template>
 
@@ -44,12 +43,6 @@ export default {
             numberOfJokesToLoad: '',
             foundDuplicate: false,
             errorResponse: null,
-        }
-    },
-    props: {
-        finishedLoading: {
-            type: String,
-            default: 'Anonym'
         }
     },
     methods: {
