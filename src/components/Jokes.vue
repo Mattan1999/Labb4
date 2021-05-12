@@ -70,7 +70,7 @@ export default {
                 }
                 this.$store.commit('updateJokesFetched', number)
                 for(let i = 0; i < number; i++) {
-                    let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart'
+                    let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart&' + i
                     this.axios.get(url).then((response) => {
                         // for(let i = 0; i < this.jokes.length; i++) {
                         //     if (this.jokes[i].id === response.data.id) {

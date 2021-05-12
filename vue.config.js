@@ -15,7 +15,7 @@ module.exports = {
             options: {
               networkTimeoutSeconds: 5
             },
-            urlPattern: 'https://v2.jokeapi.dev/joke/Any?type=twopart'
+            urlPattern: /^https:\/\/v2\.jokeapi\.dev\/joke\/Any\?type=twopart&\d+$/
           }
         ]
       }
