@@ -2,6 +2,7 @@ module.exports = {
     pwa: {
       manifestOptions: {
         name: 'Funny Jokes',
+        short_name: 'Funny Jokes',
         start_url: './',
         display: 'standalone',
         background_color: '#3d3d3d',

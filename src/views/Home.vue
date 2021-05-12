@@ -18,7 +18,7 @@
         </div>
       </div>
       <div v-if="isOffline" class="network-status">
-        <h4 >You are currently offline!<br>The page wont work</h4>
+        <h5>You are currently offline.<br>The page might not work!</h5>
       </div>
     </Jokes>
   </div>
@@ -58,6 +58,7 @@ export default {
     jokesLoaded(numberOfJokesLoaded, number) {
       this.loading = true
       this.inputErr = false
+      this.errorElementVisible = false
       this.numberOfJokes = numberOfJokesLoaded
       this.jokesToLoad = number
     },
@@ -65,12 +66,9 @@ export default {
       this.successfullElementVisible = true
     },
     errorLoadingJokes(error) {
+      this.successfullElementVisible = false
       this.errorElementVisible = true
       this.errorInfo = error
-      console.log(this.errorInfo)
-      setTimeout(() => {
-        this.successfullElementVisible = false
-      }, 0)
     }
   },
   watch: {

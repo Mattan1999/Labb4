@@ -74,12 +74,12 @@ export default {
                 for(let i = 0; i < number; i++) {
                     let url = 'https://v2.jokeapi.dev/joke/Any?type=twopart'
                     this.axios.get(url).then((response) => {
-                        for(let i = 0; i < this.jokes.length; i++) {
-                            if (this.jokes[i].id === response.data.id) {
-                                this.foundDuplicate = true
-                                console.log("Found duplicate!!!")
-                            }
-                        }
+                        // for(let i = 0; i < this.jokes.length; i++) {
+                        //     if (this.jokes[i].id === response.data.id) {
+                        //         this.foundDuplicate = true
+                        //         console.log("Found duplicate!!!")
+                        //     }
+                        // }
                         response.data['showPunchline'] = false
                         response.data['liked'] = false
                         this.jokes.push(response.data)
@@ -92,6 +92,8 @@ export default {
                         } else if (err.request) {
                             console.log("err.request")
                             console.log(err.request.response.error)
+                        } else {
+                            console.log("else (kanske duplicate?)")
                         }
                     })
                 }
@@ -181,7 +183,6 @@ export default {
 
     .joke-setup {
         padding: 10px 0 0 0;
-        margin: 10px;
         font-weight: 600;
         color: #e0e0e0;
         text-shadow: $text-shadow;
@@ -214,23 +215,22 @@ export default {
         border-radius: 10px;
         box-shadow: $box-shadow;
         text-shadow: $text-shadow;
-        width: 350px;
+        width: 80%;
         color: $success;
     }
 
     .loaded-jokes h5, .error-loading-jokes h5 {
-        margin: 15px;
+        padding: 15px;
     }
 
     .error-loading-jokes {
         display: block;
-        padding: 1px 10px;
-        margin: 20px auto 10px auto;
+        margin: 20px auto 0 auto;
         background-color: #4b4b4b;
         border-radius: 10px;
         box-shadow: $box-shadow;
         text-shadow: $text-shadow;
-        width: 500px;
+        width: 80%;
         color: $error;
     }
 
@@ -242,29 +242,24 @@ export default {
 
     .network-status {
         display: block;
-        padding: 15px 10px;
-        margin: 20px auto 10px auto;
+        padding: 15px 0 15px 0;
+        margin: 20px auto 0 auto;
         background-color: #4b4b4b;
         border-radius: 10px;
         box-shadow: $box-shadow;
         text-shadow: $text-shadow;
-        width: 400px;
+        width: 80%;
         color: $error;
     }
 
     @media (min-width: 513px) and (max-width: 899px) {
-        .user-input, .fetch-btn {
-            display: inline-block;
-            margin: 0 auto;
-        }
-
         .user-input {
             padding: 10px 15px 10px 15px;
             line-height: 20px;
             font-size: 16px;
             border: none;
             border-radius: 5px;
-            width: 50%;
+            width: 60%;
             margin-right: 10px;
             background-color: $white-color;
         }
@@ -276,7 +271,7 @@ export default {
             border-radius: 5px;
             background-color: $button-color;
             font-size: 16px;
-            width: 25%;
+            width: 30%;
         }
 
         .joke-template {
@@ -287,119 +282,24 @@ export default {
         .joke-area-3 {
             display: grid;
             grid-template-columns: 50% 50%;
-            margin: 20px 10px 10px 10px;
-            color: $punchline-color;
-        }
-
-        .joke {
-            padding: 0 10px;
-            margin: 0 10px 20px 10px;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-        }
-
-        .joke-setup {
-            padding: 10px 0 0 0;
-            margin: 10px;
-            font-weight: 600;
-            color: #e0e0e0;
-            text-shadow: $text-shadow;
-        }
-
-        .joke-punchline {
-            font-style: italic;
-            text-shadow: $text-shadow;
-        }
-
-        .punchline-button {
-            padding: $padding;
-            line-height: 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: $button-color;
-            font-size: 16px;
-            margin: 0 auto 10px auto;
-        }
-
-        .like {
-            margin-bottom: 10px;
         }
 
         .loaded-jokes {
-            display: block;
-            padding: 1px 10px;
-            margin: 30px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
             width: 350px;
-            color: $success;
-        }
-
-        .loaded-jokes h5, .error-loading-jokes h5 {
-            margin: 15px;
-        }
-
-        .error-loading-jokes {
-            display: block;
-            padding: 1px 10px;
-            margin: 20px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
-            width: 500px;
-            color: $error;
-        }
-
-        .loading {
-            padding: 1px 10px;
-            margin: 0px auto 15px auto;
-            color: $white-color;
         }
 
         .network-status {
-            display: block;
-            padding: 15px 10px;
-            margin: 20px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
-            width: 400px;
-            color: $error;
+            width: 350px;
         }
     }
 
     @media (min-width: 900px) {
-        .joke-page {
-            display: block;
-            margin: 0 auto;
-            width: 75%;
-            color: #e0e0e0;
-        }
-
         .user-input {
-            padding: 10px 20px 10px 20px;
-            line-height: 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            margin: 10px 10px 0 0;
-            background-color: $white-color;
-            width: 250px;
+            width: 300px;
         }
 
         .fetch-btn {
-            padding: 10px 10px 10px 10px;
-            line-height: 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: $button-color;
-            font-size: 16px;
-            width: 120px;
+            width: 125px;
         }
 
         .joke-template {
@@ -409,94 +309,20 @@ export default {
 
         .joke-area-3 {
             display: grid;
-            grid-template-columns: 33% 33% 33%;
-            margin: 20px 10px 10px 10px;
-            color: $punchline-color;
-        }
-
-        .joke {
-            padding: 0 10px;
-            margin: 0 10px 20px 10px;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-        }
-
-        .joke-setup {
-            margin: 10px;
-            font-weight: 600;
-            color: #e0e0e0;
-            text-shadow: $text-shadow;
-        }
-
-        .joke-punchline {
-            font-style: italic;
-            text-shadow: $text-shadow;
-        }
-
-        .punchline-button {
-            background-color: $button-color;
-            border: none;
-            border-radius: 5px;
-            color: #131212;
-            padding: 8px 12px;
-            margin: 0 auto 10px auto;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-        }
-
-        .like {
-            margin-bottom: 10px;
+            grid-template-columns: 33.33% 33.33% 33.33%;
         }
 
         .loaded-jokes {
-            display: block;
-            padding: 1px 10px;
-            margin: 30px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
             width: 350px;
-            color: $success;
-        }
-
-        .loaded-jokes h5, .error-loading-jokes h5 {
-            margin: 15px;
         }
 
         .error-loading-jokes {
-            display: block;
-            padding: 1px 10px;
-            margin: 20px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
-            width: 500px;
-            color: $error;
-        }
-
-        .loading {
-            padding: 1px 10px;
-            margin: 0px auto 15px auto;
-            color: $white-color;
+            width: 40%;
         }
 
         .network-status {
-            display: block;
-            padding: 15px 10px;
-            margin: 20px auto 10px auto;
-            background-color: #4b4b4b;
-            border-radius: 10px;
-            box-shadow: $box-shadow;
-            text-shadow: $text-shadow;
-            width: 400px;
-            color: $error;
+            width: 350px;
         }
     }
 
-    
 </style>
