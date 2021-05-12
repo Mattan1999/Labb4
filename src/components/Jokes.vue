@@ -38,11 +38,9 @@ export default {
     created() {
         this.fetchData(10)
         this.$on('online', () => {
+            this.$store.commit("resetLikedJokes")
             this.fetchData(10)
         })
-    },
-    mounted() {
-        
     },
     data() {
         return {

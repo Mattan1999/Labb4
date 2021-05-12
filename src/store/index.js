@@ -22,6 +22,9 @@ export default new Vuex.Store({
           break
         }
       }
+    },
+    resetLikedJokes(state) {
+      state.likedJokes = []
     }
   },
   actions: {
