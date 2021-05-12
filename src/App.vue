@@ -10,6 +10,7 @@
 </template>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,7 +20,7 @@
 }
 
 #nav {
-  padding: 30px;
+  padding: 30px 0 30px 0;
 }
 
 #nav a {

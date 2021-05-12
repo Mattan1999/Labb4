@@ -34,10 +34,12 @@ export default {
 
 <style scoped>
   .developer {
-    display: block;
-    margin: 25px auto 0 auto;
+    position: absolute;
+    margin-left: -150px;
+    left: 50%;
+    bottom: 25px;
     padding: 10px;
-    width: 300px;
+    max-width: 300px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
     text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;

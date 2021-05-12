@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img :src="image" width="150px">
+    <img class="img" :src="image" width="125px">
     <h1>Welcome to funny jokes</h1>
     <h5>Everytime you visit this page 10 jokes will be loaded.</h5>
     <h5>If you want to read more jokes, enter a number!</h5>
@@ -52,7 +52,7 @@ export default {
       this.successfullElementVisible = false
       setTimeout(() => {
         this.inputErr = false
-      }, 3000)
+      }, 5000)
       
     },
     jokesLoaded(numberOfJokesLoaded, number) {
@@ -87,3 +87,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .home, h1 {
+    font-size: 2rem;
+  }
+  .home, h5 {
+    font-size: 1.1rem;
+  }
+</style>

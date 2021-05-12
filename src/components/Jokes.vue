@@ -1,6 +1,6 @@
 <template>
     <div class="joke-page">
-        <input class="user-input" type="text" placeholder="Enter number of jokes" v-model="numberOfJokesToLoad">
+        <input class="user-input" type="text" placeholder="Enter a number..." v-model="numberOfJokesToLoad">
         <button class="fetch-btn" @click="fetchData(numberOfJokesToLoad)">Load jokes</button>
         <slot></slot>
         <div class="joke-template" v-if="jokes">
@@ -37,6 +37,12 @@ export default {
     name: 'fetch',
     created() {
         this.fetchData(10)
+        this.$on('online', () => {
+            this.fetchData(10)
+        })
+    },
+    mounted() {
+        
     },
     data() {
         return {
@@ -123,56 +129,45 @@ export default {
     $box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 4px;
     $text-shadow: rgba(0, 0, 0, 0.6) 1px 2px 2px;
     $white-color: #EBEBEB;
-
-
+    $padding: 8px 12px 8px 12px;
+    $background-color: #4b4b4b;
 
 
     .joke-page {
         color: #e0e0e0;
+        margin-top: 20px;
+    }
+
+    .user-input, .fetch-btn {
+        display: inline-block;
+        margin: 0 auto;
     }
 
     .user-input {
-        padding: 10px 20px 10px 20px;
+        padding: 10px 15px 10px 15px;
         line-height: 20px;
         font-size: 16px;
         border: none;
         border-radius: 5px;
-        margin: 20px 10px 0 0;
+        width: 60%;
+        margin-right: 10px;
         background-color: $white-color;
     }
 
     .fetch-btn {
-        padding: 10px 20px 10px 20px;
+        padding: 10px 15px 10px 15px;
         line-height: 20px;
         border: none;
         border-radius: 5px;
         background-color: $button-color;
         font-size: 16px;
-    }
-
-    .joke-template {
-        display: flex;
-        justify-content: center;
-    }
-
-    .joke-area-1 {
-        display: grid;
-        grid-template-columns: 300px;
-        margin: 20px 10px 10px 10px;
-        color: $punchline-color;
-    }
-
-    .joke-area-2 {
-        display: grid;
-        grid-template-columns: 300px 300px;
-        margin: 20px 10px 10px 10px;
-        color: $punchline-color;
+        width: 30%;
     }
 
     .joke-area-3 {
-        display: grid;
-        grid-template-columns: 300px 300px 300px;
-        margin: 20px 10px 10px 10px;
+        display: block;
+        margin: 20px auto 0 auto;
+        width: 85%;
         color: $punchline-color;
     }
 
@@ -185,6 +180,7 @@ export default {
     }
 
     .joke-setup {
+        padding: 10px 0 0 0;
         margin: 10px;
         font-weight: 600;
         color: #e0e0e0;
@@ -197,16 +193,13 @@ export default {
     }
 
     .punchline-button {
-        background-color: $button-color;
+        padding: $padding;
+        line-height: 20px;
         border: none;
         border-radius: 5px;
-        color: #131212;
-        padding: 8px 12px;
-        margin: 0 auto 10px auto;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
+        background-color: $button-color;
         font-size: 16px;
+        margin: 0 auto 10px auto;
     }
 
     .like {
@@ -258,4 +251,252 @@ export default {
         width: 400px;
         color: $error;
     }
+
+    @media (min-width: 513px) and (max-width: 899px) {
+        .user-input, .fetch-btn {
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .user-input {
+            padding: 10px 15px 10px 15px;
+            line-height: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            width: 50%;
+            margin-right: 10px;
+            background-color: $white-color;
+        }
+
+        .fetch-btn {
+            padding: 10px 15px 10px 15px;
+            line-height: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: $button-color;
+            font-size: 16px;
+            width: 25%;
+        }
+
+        .joke-template {
+            display: flex;
+            justify-content: center;
+        }
+
+        .joke-area-3 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            margin: 20px 10px 10px 10px;
+            color: $punchline-color;
+        }
+
+        .joke {
+            padding: 0 10px;
+            margin: 0 10px 20px 10px;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+        }
+
+        .joke-setup {
+            padding: 10px 0 0 0;
+            margin: 10px;
+            font-weight: 600;
+            color: #e0e0e0;
+            text-shadow: $text-shadow;
+        }
+
+        .joke-punchline {
+            font-style: italic;
+            text-shadow: $text-shadow;
+        }
+
+        .punchline-button {
+            padding: $padding;
+            line-height: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: $button-color;
+            font-size: 16px;
+            margin: 0 auto 10px auto;
+        }
+
+        .like {
+            margin-bottom: 10px;
+        }
+
+        .loaded-jokes {
+            display: block;
+            padding: 1px 10px;
+            margin: 30px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 350px;
+            color: $success;
+        }
+
+        .loaded-jokes h5, .error-loading-jokes h5 {
+            margin: 15px;
+        }
+
+        .error-loading-jokes {
+            display: block;
+            padding: 1px 10px;
+            margin: 20px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 500px;
+            color: $error;
+        }
+
+        .loading {
+            padding: 1px 10px;
+            margin: 0px auto 15px auto;
+            color: $white-color;
+        }
+
+        .network-status {
+            display: block;
+            padding: 15px 10px;
+            margin: 20px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 400px;
+            color: $error;
+        }
+    }
+
+    @media (min-width: 900px) {
+        .joke-page {
+            display: block;
+            margin: 0 auto;
+            width: 75%;
+            color: #e0e0e0;
+        }
+
+        .user-input {
+            padding: 10px 20px 10px 20px;
+            line-height: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px 10px 0 0;
+            background-color: $white-color;
+            width: 250px;
+        }
+
+        .fetch-btn {
+            padding: 10px 10px 10px 10px;
+            line-height: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: $button-color;
+            font-size: 16px;
+            width: 120px;
+        }
+
+        .joke-template {
+            display: flex;
+            justify-content: center;
+        }
+
+        .joke-area-3 {
+            display: grid;
+            grid-template-columns: 33% 33% 33%;
+            margin: 20px 10px 10px 10px;
+            color: $punchline-color;
+        }
+
+        .joke {
+            padding: 0 10px;
+            margin: 0 10px 20px 10px;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+        }
+
+        .joke-setup {
+            margin: 10px;
+            font-weight: 600;
+            color: #e0e0e0;
+            text-shadow: $text-shadow;
+        }
+
+        .joke-punchline {
+            font-style: italic;
+            text-shadow: $text-shadow;
+        }
+
+        .punchline-button {
+            background-color: $button-color;
+            border: none;
+            border-radius: 5px;
+            color: #131212;
+            padding: 8px 12px;
+            margin: 0 auto 10px auto;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .like {
+            margin-bottom: 10px;
+        }
+
+        .loaded-jokes {
+            display: block;
+            padding: 1px 10px;
+            margin: 30px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 350px;
+            color: $success;
+        }
+
+        .loaded-jokes h5, .error-loading-jokes h5 {
+            margin: 15px;
+        }
+
+        .error-loading-jokes {
+            display: block;
+            padding: 1px 10px;
+            margin: 20px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 500px;
+            color: $error;
+        }
+
+        .loading {
+            padding: 1px 10px;
+            margin: 0px auto 15px auto;
+            color: $white-color;
+        }
+
+        .network-status {
+            display: block;
+            padding: 15px 10px;
+            margin: 20px auto 10px auto;
+            background-color: #4b4b4b;
+            border-radius: 10px;
+            box-shadow: $box-shadow;
+            text-shadow: $text-shadow;
+            width: 400px;
+            color: $error;
+        }
+    }
+
+    
 </style>
