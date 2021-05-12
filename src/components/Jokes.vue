@@ -1,6 +1,6 @@
 <template>
     <div class="joke-page">
-        <input class="user-input" type="text" placeholder="Enter a number..." v-model="numberOfJokesToLoad">
+        <input class="user-input" type="number" placeholder="Enter a number..." v-model="numberOfJokesToLoad">
         <button class="fetch-btn" @click="fetchData(numberOfJokesToLoad)">Load jokes</button>
         <slot></slot>
         <div class="joke-template" v-if="jokes">

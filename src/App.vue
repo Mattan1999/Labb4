@@ -25,7 +25,8 @@
 
 #nav a {
   font-weight: bold;
-  color: #005A85;
+  /* color: #005A85; */
+  color: #666565;
   text-shadow: rgba(0, 0, 0, 0.2) 1px 2px 3px;
 }
 

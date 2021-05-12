@@ -6,8 +6,8 @@ module.exports = {
         start_url: './',
         display: 'standalone',
         background_color: '#3d3d3d',
-        themeColor: 'steelblue',
       },
+      themeColor: '#3d3d3d',
       workboxOptions: {
         runtimeCaching: [
           {
